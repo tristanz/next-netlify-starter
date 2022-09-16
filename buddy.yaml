@@ -1,0 +1,23 @@
+- pipeline: "Build and test"
+  on: "EVENT"
+  events:
+    - type: "PUSH"
+      refs:
+        - "refs/heads/main"
+  priority: "NORMAL"
+  fail_on_prepare_env_warning: true
+  actions:
+    - action: "Execute npm test"
+      type: "BUILD"
+      working_directory: "/buddy/next-netlify-starter"
+      main_service_name: "Main"
+      docker_image_name: "library/node"
+      docker_image_tag: "16"
+      execute_commands:
+        - "# yarn install"
+        - "npm install"
+        - "npm test"
+      volume_mappings:
+        - "/:/buddy/next-netlify-starter"
+      cache_base_image: true
+      shell: "BASH"
